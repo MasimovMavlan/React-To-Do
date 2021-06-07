@@ -1,0 +1,60 @@
+.item-todo {
+  .tasks {
+    display: flex;
+    align-items: center;
+
+    .editInput {
+      display: flex;
+      margin: 15px 0;
+
+      textarea {
+        padding: 15px;
+        margin: 0;
+        width: 50vw;
+        border: 2px dashed #3f51b5;
+        border-radius: 4px;
+        min-height: 25px;
+      }
+
+      textarea:focus {
+        outline: none;
+      }
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px 0;
+
+      .text-task {
+        padding: 15px;
+        width: 50vw;
+        min-width: 330px;
+        word-break: break-all;
+        border: 2px dashed rgb(142, 255, 166);
+        border-radius: 4px;
+      }
+
+      .done-text {
+        color: #f52e57;
+        border: 2px dashed #f52e57;
+      }
+    }
+  }
+}
+
+@media screen and (max-device-width: 1024px) {
+  .task,
+  .tasks,
+  .editInput {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .item-todo .tasks .task .done-text,
+  .item-todo .tasks .task .text-task {
+    text-align: center;
+    width: 70vw;
+  }
+}

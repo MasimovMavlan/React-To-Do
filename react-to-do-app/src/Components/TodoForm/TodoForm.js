@@ -3,12 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import "./TodoFormStyles.scss";
 
 const TodoForm = ({ todos, setTodos }) => {
   const [text, setText] = useState("");
 
   const addTask = async (text) => {
-    if (text) {
+    if (text.trim()) {
       await axios
         .post("http://localhost:8000/createTask", {
           text,
@@ -20,7 +21,7 @@ const TodoForm = ({ todos, setTodos }) => {
     }
   };
 
-  const removeAllTasks = async (index) => {
+  const removeAllTasks = async () => {
     await axios.delete("http://localhost:8000/deleteAllTasks").then((res) => {
       setTodos(res.data.data);
     });
@@ -28,7 +29,6 @@ const TodoForm = ({ todos, setTodos }) => {
 
   const taskChange = (e) => {
     setText(e.target.value);
-    addTask();
   };
 
   const inputKeyPress = (e) => {

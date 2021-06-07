@@ -9,11 +9,15 @@ const Todo = ({ todos, setTodos }) => {
   const [temp, setTemp] = useState("");
   const [indexEdit, setIndexEdit] = useState(-1);
 
-  useEffect(async () => {
-    await axios.get("http://localhost:8000/allTasks").then((res) => {
-      setTodos(res.data.data);
-    });
-  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get("http://localhost:8000/allTasks").then((res) => {
+        setTodos(res.data.data);
+      });
+    };
+    fetchData();
+  }, [setTodos]);
+  console.log(todos);
 
   const doneElement = async (index) => {
     if (temp) {
@@ -66,7 +70,6 @@ const Todo = ({ todos, setTodos }) => {
   const tempEditEnter = (e, index) => {
     if (e.key === "Enter") {
       doneElement(index);
-      e.target.blur();
     }
   };
 
@@ -85,13 +88,19 @@ const Todo = ({ todos, setTodos }) => {
         <div key={`task-${index}`} className="tasks">
           <Checkbox
             checked={task.isCheck}
+            disabled={index === indexEdit ? true : false}
             onChange={() => checkboxChange(index)}
             inputProps={{ "aria-label": "primary checkbox" }}
             className="checkbox"
           />
+
           {index === indexEdit ? (
             <div className="editInput">
-              <textarea onChange={changeTempEdit} value={temp} />
+              <textarea
+                onChange={changeTempEdit}
+                onKeyDown={(e) => tempEditEnter(e, index)}
+                value={temp}
+              />
               <div className="buttons">
                 <Button variant="contained" onClick={() => doneElement(index)}>
                   Сохранить
@@ -113,7 +122,11 @@ const Todo = ({ todos, setTodos }) => {
                 <Button variant="contained" onClick={() => removeTask(index)}>
                   Удалить
                 </Button>
-                <Button variant="contained" onClick={() => editElement(index)}>
+                <Button
+                  disabled={task.isCheck ? true : false}
+                  variant="contained"
+                  onClick={() => editElement(index)}
+                >
                   Изменить
                 </Button>
               </div>
